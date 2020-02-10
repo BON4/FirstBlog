@@ -1,7 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 import uuid
+import django.dispatch
 
+django.dispatch.Signal()
 
 class UserAccountManager(BaseUserManager):
     use_in_migrations = True
@@ -19,7 +21,7 @@ class UserAccountManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_user(self, name, email=None, password=None, **kwargs):
+    def create_user(self, name=None, email=None, password=None, **kwargs):
         return self._create_user(name, email, password, **kwargs)
 
     def create_superuser(self, name, email, password, **kwargs):
