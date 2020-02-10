@@ -17,4 +17,17 @@ class Post(models.Model):
     def get_raiting(self):
         return (self.likes, self.dislikes)
 
+    def as_dict(self):
+        return dict(
+            pk=self.pk,
+            author=dict(
+                id=self.author.id,
+                name=self.author.name,
+            ),
+            title=self.title,
+            content=self.content,
+            date_posted=self.date_posted.isoformat(),
+            likes=self.likes,
+            dislikes=self.dislikes,)
+
 # Create your models here.
