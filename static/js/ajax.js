@@ -19,14 +19,13 @@ $(document).ready(function () {
                         updatedata(data.data);
                         data_lengh -= 1
                     }
-
                 }
                 })
                 .catch(function(err){
                     console.log('err', err);
                     clearTimer('An error occurred', timer);
                 });
-            }, 800);
+            }, 3000);
 
         }
     })

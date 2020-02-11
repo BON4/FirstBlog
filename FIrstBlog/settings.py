@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'jquery',
     'widget_tweaks',
+    'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -128,6 +129,7 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000
 
