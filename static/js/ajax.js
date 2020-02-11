@@ -42,12 +42,14 @@ function updatedata(data) {
         let posts = ``;
         $('#figure-div').html("");
         data.forEach(post => {
+            var date = new Date(post.date_posted);
+            var options = { day: 'numeric', year: 'numeric', month: 'numeric', weekday: 'short' };
             posts += `
                           <article class="media content-section">
                             <div class="media-body">
                               <div class="article-metadata">
                                 <a class="mr-2" href="#">${post.author.name}</a>
-                                <small class="text-muted">${post.date_posted}</small>
+                                <small class="text-muted">${date.toLocaleDateString("ru", options)}</small>
                                 <small><button id="like" class="fa fa-thumbs-up"></button>${post.likes} <button id="dislike" class="fa fa-thumbs-down"></button>${post.dislikes}</small>
                              </div>
                               <h2><a class="article-title" href="#">${post.title}</a></h2>
@@ -59,12 +61,13 @@ function updatedata(data) {
     }
     else{
         let posts = ``;
+        var date = new Date(data.date_posted);
             posts += `
                           <article class="media content-section">
                             <div class="media-body">
                               <div class="article-metadata">
                                 <a class="mr-2" href="#">${data.author.name}</a>
-                                <small class="text-muted">${data.date_posted}</small>
+                                <small class="text-muted">${date.getUTCDate()}/${date.getUTCMonth()}/${date.getFullYear()}</small>
                                 <small><button id="like" class="fa fa-thumbs-up"></button>${data.likes} <button id="dislike" class="fa fa-thumbs-down"></button>${data.dislikes}</small>
                              </div>
                               <h2><a class="article-title" href="#">${data.title}</a></h2>

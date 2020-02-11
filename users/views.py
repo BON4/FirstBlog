@@ -12,4 +12,4 @@ def verify(request, uuid):
     user.is_verified = True
     user.save()
 
-    return redirect('blog:home')
+    return redirect('blog-home')
