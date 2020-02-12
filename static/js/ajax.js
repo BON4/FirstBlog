@@ -74,8 +74,34 @@ $(document).ready(function () {
                     }
                 })
             });
+            if(userid !== 'None') {
+
+                $.ajax({
+                    url: `/user/${userid}/liked_posts/`,
+                    type: 'GET',
+                    headers: {"X-CSRFToken": getCookie("csrftoken")},
+                    dataType: 'json',
+                    success: function (data) {
+                        for (var i = 0; i < data.length; i++) {
+                            document.getElementById(`${data[i]}_like`).style.backgroundColor = 'green';
+                        }
+                    }
+                });
+
+                $.ajax({
+                    url: `/user/${userid}/disliked_posts/`,
+                    type: 'GET',
+                    headers: {"X-CSRFToken": getCookie("csrftoken")},
+                    dataType: 'json',
+                    success: function (data) {
+                        for (var i = 0; i < data.length; i++) {
+                            document.getElementById(`${data[i]}_dislike`).style.backgroundColor = 'red';
+                        }
+                    }
+                });
+            }
         }
-    })
+    });
 });
 
 function clearTimer(message, timer) {

@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect
-from .models import User
 from django.http import Http404
 from .forms import UserRegisterForm
+from django.views import View
+from django.http import JsonResponse
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
-
+from users.models import User
 
 def verify(request, uuid):
     try:
@@ -29,3 +32,18 @@ def register(request):
     else:
         form = UserRegisterForm()
     return render(request, 'users/register.html', context={'form': form})
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class UserLikedPostsView(View):
+    def get(self, request, id):
+        context = [x.id for x in User.objects.get(id=id).likes.all()]
+        return JsonResponse(context, safe=False)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class UserDisLikedPostsView(View):
+    def get(self, request, id):
+        context = [x.id for x in User.objects.get(id=id).dislikes.all()]
+        return JsonResponse(context, safe=False)
+
