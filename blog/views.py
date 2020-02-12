@@ -30,8 +30,19 @@ class PostListView(View):
 @method_decorator(csrf_exempt, name='dispatch')
 class PostLikeView(View):
     def post(self, request, pk):
+        err = ''
         if request.method == 'POST':
             p = Post.objects.get(id=pk)
-            p.like_post(request.POST['user_id'])
-        return JsonResponse({})
+            err = p.like_post(request.POST['user_id'])
+        return JsonResponse({'err': err})
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class PostDisLikeView(View):
+    def post(self, request, pk):
+        err = ''
+        if request.method == 'POST':
+            p = Post.objects.get(id=pk)
+            err = p.dislike_post(request.POST['user_id'])
+        return JsonResponse({'err': err})
 # Create your views here.

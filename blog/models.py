@@ -17,12 +17,24 @@ class Post(models.Model):
     def like_post(self, user_id):
         user = User.objects.get(id=user_id)
         if user not in self.likes.all():
-            return self.likes.add(user)
+            if user not in self.dislikes.all():
+                self.likes.add(user)
+                return ''
+            else:
+                return 'You already disliked this post'
+        else:
+            return 'You already liked this post'
 
     def dislike_post(self, user_id):
         user = User.objects.get(id=user_id)
         if user not in self.dislikes.all():
-            return self.dislikes.add(user)
+            if user not in self.likes.all():
+                self.dislikes.add(user)
+                return ''
+            else:
+                return 'You already liked this post'
+        else:
+            return 'You already disliked this post'
 
     def get_likes_count(self):
         return self.likes.count()

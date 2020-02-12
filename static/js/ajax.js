@@ -26,17 +26,54 @@ $(document).ready(function () {
                     clearTimer('An error occurred', timer);
                 });
             }, 30000);
-            $('#like').on('click', function (element) {
+
+            $('.likebutton').on('click', function (element) {
+                if(userid === 'None'){
+                    alert("You are not logged in");
+                    return null;
+                }
+                var post_id = this.id.split('_')[0];
                 $.ajax({
-                    url: `/post/like/${this.value}`,
+                    url: `/post/like/${post_id}/`,
                     type: 'POST',
                     dataType: 'json',
-                    data: {'user_id': userid, 'post_id': this.value},
-                    success: function () {
-                        / TODO СДЕЛАТЬ НоРМАЛЬНО ЛАЙКИ
+                    data: {'user_id': userid, 'post_id': post_id},
+                    success: function (response) {
+                        var likes = document.getElementById(`${post_id}_like`).textContent;
+                        if(response.err.length !== 0){
+                            alert(response.err);
+                        }
+                        else {
+                            likes = parseInt(likes) + 1;
+                            document.getElementById(`${post_id}_like`).textContent = likes;
+                        }
                     }
                 })
-            })
+            });
+
+            $('.dislikebutton').on('click', function (element) {
+                if(userid === 'None'){
+                    alert("You are not logged in");
+                    return null;
+                }
+                var post_id = this.id.split('_')[0];
+                $.ajax({
+                    url: `/post/dislike/${post_id}/`,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {'user_id': userid, 'post_id': post_id},
+                    success: function (response) {
+                        var dislikes = document.getElementById(`${post_id}_dislike`).textContent;
+                        if(response.err.length !== 0){
+                            alert(response.err);
+                        }
+                        else {
+                            dislikes = parseInt(dislikes) + 1;
+                            document.getElementById(`${post_id}_dislike`).textContent = dislikes;
+                        }
+                    }
+                })
+            });
         }
     })
 });
@@ -59,7 +96,10 @@ function updatedata(data) {
                               <div class="article-metadata">
                                 <a class="mr-2" href="#">${post.author.name}</a>
                                 <small class="text-muted">${date.toLocaleDateString("ru", options)}</small>
-                                <small><button id="like" class="fa fa-thumbs-up" value="${post.pk}"></button>${post.likes} <button id="dislike" class="fa fa-thumbs-down"></button>${post.dislikes}</small>
+                                <small id="ratings">
+                                    <button id="${post.pk}_like" class="fa fa-thumbs-up likebutton">${post.likes}</button>
+                                    <button id="${post.pk}_dislike" class="fa fa-thumbs-down dislikebutton">${post.dislikes}</button>
+                                </small>
                              </div>
                               <h2><a class="article-title" href="#">${post.title}</a></h2>
                               <p class="article-content">${post.content}</p>
@@ -75,12 +115,15 @@ function updatedata(data) {
                           <article class="media content-section">
                             <div class="media-body">
                               <div class="article-metadata">
-                                <a class="mr-2" href="#">${data.author.name}</a>
-                                <small class="text-muted">${date.getUTCDate()}/${date.getUTCMonth()}/${date.getFullYear()}</small>
-                                <small><button id="like" class="fa fa-thumbs-up"></button>${data.likes} <button id="dislike" class="fa fa-thumbs-down"></button>${data.dislikes}</small>
+                                <a class="mr-2" href="#">${post.author.name}</a>
+                                <small class="text-muted">${date.toLocaleDateString("ru", options)}</small>
+                                <small id="ratings">
+                                    <button id="${post.pk}_like" class="fa fa-thumbs-up">${post.likes}</button>
+                                    <button id="${post.pk}_dislike" class="fa fa-thumbs-down">${post.dislikes}</button>
+                                </small>
                              </div>
-                              <h2><a class="article-title" href="#">${data.title}</a></h2>
-                              <p class="article-content">${data.content}</p>
+                              <h2><a class="article-title" href="#">${post.title}</a></h2>
+                              <p class="article-content">${post.content}</p>
                             </div>
                           </article>`;
         $('#figure-div').append(posts);
