@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from .models import Post
 from django.views import View
-from django.core.serializers import serialize
 from django.http import JsonResponse
-import json
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
 
 def home(request):
     context = {
@@ -16,6 +17,7 @@ def about(request):
     return render(request, 'blog/about.html', {'title': 'About'})
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class PostListView(View):
     def get(self, request):
         context = []
@@ -24,4 +26,12 @@ class PostListView(View):
 
         return JsonResponse(context, safe=False)
 
+
+@method_decorator(csrf_exempt, name='dispatch')
+class PostLikeView(View):
+    def post(self, request, pk):
+        if request.method == 'POST':
+            p = Post.objects.get(id=pk)
+            p.like_post(request.POST['user_id'])
+        return JsonResponse({})
 # Create your views here.

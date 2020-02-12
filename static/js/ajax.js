@@ -25,8 +25,18 @@ $(document).ready(function () {
                     console.log('err', err);
                     clearTimer('An error occurred', timer);
                 });
-            }, 3000);
-
+            }, 30000);
+            $('#like').on('click', function (element) {
+                $.ajax({
+                    url: `/post/like/${this.value}`,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {'user_id': userid, 'post_id': this.value},
+                    success: function () {
+                        / TODO СДЕЛАТЬ НоРМАЛЬНО ЛАЙКИ
+                    }
+                })
+            })
         }
     })
 });
@@ -49,7 +59,7 @@ function updatedata(data) {
                               <div class="article-metadata">
                                 <a class="mr-2" href="#">${post.author.name}</a>
                                 <small class="text-muted">${date.toLocaleDateString("ru", options)}</small>
-                                <small><button id="like" class="fa fa-thumbs-up"></button>${post.likes} <button id="dislike" class="fa fa-thumbs-down"></button>${post.dislikes}</small>
+                                <small><button id="like" class="fa fa-thumbs-up" value="${post.pk}"></button>${post.likes} <button id="dislike" class="fa fa-thumbs-down"></button>${post.dislikes}</small>
                              </div>
                               <h2><a class="article-title" href="#">${post.title}</a></h2>
                               <p class="article-content">${post.content}</p>

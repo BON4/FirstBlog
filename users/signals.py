@@ -10,7 +10,7 @@ def user_post_save(sender, instance, created, *args, **kwargs):
     if created:
         if not instance.is_verified:
             text_to_send = 'Follow this link to verify your account: http://127.0.0.1:8000%s' \
-                           % reverse('blog-verify', kwargs={'uuid': str(instance.verification_uuid)})
+                           % reverse('users-verify', kwargs={'uuid': str(instance.verification_uuid)})
 
             one_sending(subject="Account verification",
                         text=text_to_send,

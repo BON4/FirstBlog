@@ -5,10 +5,15 @@ import django.dispatch
 
 django.dispatch.Signal()
 
+
 class UserAccountManager(BaseUserManager):
     use_in_migrations = True
 
     def _create_user(self, name, email, password, **kwargs):
+
+        if not name:
+            raise ValueError('Name must be provided')
+
         if not email:
             raise ValueError('Email address must be provided')
 
@@ -32,8 +37,9 @@ class UserAccountManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    REQUIRED_FIELDS = []
-    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['email']
+    USERNAME_FIELD = 'name'
+    EMAIL_FIELD = 'email'
 
     objects = UserAccountManager()
 

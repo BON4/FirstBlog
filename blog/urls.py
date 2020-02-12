@@ -7,4 +7,5 @@ urlpatterns = [
     path('', views.home, name='blog-home'),
     path('post/list/', views.PostListView.as_view(), name='blog-list'),
     path('about/', views.about, name='blog-about'),
+    path('post/like/<int:pk>', views.PostLikeView.as_view(), name='blog-post-like'),
 ]
