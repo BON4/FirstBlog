@@ -7,6 +7,8 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from users.models import User
+from django.contrib.auth.decorators import login_required
+
 
 def verify(request, uuid):
     try:
@@ -47,3 +49,7 @@ class UserDisLikedPostsView(View):
         context = [x.id for x in User.objects.get(id=id).dislikes.all()]
         return JsonResponse(context, safe=False)
 
+
+@login_required
+def profile_view(request):
+    return render(request, 'users/profile.html')

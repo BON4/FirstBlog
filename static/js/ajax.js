@@ -46,6 +46,7 @@ $(document).ready(function () {
                         else {
                             likes = parseInt(likes) + 1;
                             document.getElementById(`${post_id}_like`).textContent = likes;
+                            document.getElementById(`${post_id}_like`).style.backgroundColor = 'green';
                         }
                     }
                 })
@@ -70,6 +71,7 @@ $(document).ready(function () {
                         else {
                             dislikes = parseInt(dislikes) + 1;
                             document.getElementById(`${post_id}_dislike`).textContent = dislikes;
+                            document.getElementById(`${post_id}_dislike`).style.backgroundColor = 'red';
                         }
                     }
                 })

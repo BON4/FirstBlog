@@ -1,5 +1,5 @@
 from django.dispatch import receiver
-from .models import User
+from .models import User, Profile
 from django.db.models.signals import (post_save, post_delete)
 from.task import one_sending
 from django.shortcuts import reverse
@@ -15,7 +15,12 @@ def user_post_save(sender, instance, created, *args, **kwargs):
             one_sending(subject="Account verification",
                         text=text_to_send,
                         email=instance.email)
-            print("Message must been sent")
+            Profile.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def user_save(sender, instance, **kwargs):
+    instance.profile.save()
 
 
 @receiver(post_delete, sender=User)
